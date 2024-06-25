@@ -2,13 +2,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from quixstreams import Application
 from waitress import serve
+import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
+output_topic_name = os.getenv('output')
+
 # Initialize QuixStreams Application
 quix_app = Application()
-topic = quix_app.topic(name='user_interactions', value_serializer='json')
+topic = quix_app.topic(name=output_topic_name, value_serializer='json')
 
 
 @app.route('/', methods=['GET'])
