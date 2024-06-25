@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Initialize QuixStreams Application
-quix_app = Application(broker_address='localhost:9092')
+quix_app = Application()
 topic = quix_app.topic(name='user_interactions', value_serializer='json')
 
 
