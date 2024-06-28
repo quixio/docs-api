@@ -13,7 +13,6 @@ output_topic_name = os.getenv('output')
 quix_app = Application()
 topic = quix_app.topic(name=output_topic_name, value_serializer='json')
 
-
 @app.route('/', methods=['GET'])
 def root():
     return jsonify({"message": "I'm alive"}), 200
@@ -25,8 +24,9 @@ def publish_event():
         return jsonify({"error": "Invalid data provided"}), 400
 
     with quix_app.get_producer() as producer:
-        message = topic.serialize(key=data['sessionId'], value=data)
-        producer.produce(topic=topic.name, value=message.value, key=message.key)
+        for event in data['events']:
+            message = topic.serialize(key=data['sessionId'], value=event)
+            producer.produce(topic=topic.name, value=message.value, key=message.key)
     
     return jsonify({"status": "success"}), 200
 
