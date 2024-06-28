@@ -21,7 +21,7 @@ def root():
 @app.route('/publish', methods=['POST'])
 def publish_event():
     data = request.json
-    if not data or 'sessionId' not in data or 'object' not in data or 'action' not in data:
+    if not data or 'sessionId' not in data or 'events' not in data:
         return jsonify({"error": "Invalid data provided"}), 400
 
     with quix_app.get_producer() as producer:
